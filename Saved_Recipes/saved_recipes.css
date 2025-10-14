@@ -1,0 +1,117 @@
+:root {
+    --brand: #63c06b;
+    --brand-700: #3ea652;
+    --ink: #212529;
+    --muted: #6c757d;
+    --surface: #f4f6f8;
+    --accent: #f3c94b;
+    --card-radius: 14px;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.06);
+    --shadow-md: 0 6px 24px rgba(0,0,0,.06);
+  }
+
+  /* Top bar */
+  .topbar {
+    background: linear-gradient(90deg, var(--brand-700), var(--brand));
+    color: #fff;
+    min-height: 54px;
+  }
+  .topbar .navbar-brand {
+    display: flex; align-items: center; gap: .5rem;
+    color: #fff;
+  }
+  .logo-dot {
+    width: 26px; height: 26px; border-radius: 7px; background: rgba(255,255,255,.8);
+    border: 2px solid rgba(255,255,255,.9);
+  }
+  .topbar .nav-link { color: #ffffffd9; }
+  .topbar .nav-link:hover, .topbar .nav-link:focus { color: #fff; }
+
+  /* Page header */
+  .page-header {
+    background: var(--surface);
+    border-bottom: 1px solid rgba(0,0,0,.04);
+  }
+
+  /* Search input */
+  .search-wrap {
+    max-width: 360px;
+  }
+  .search-wrap .form-control {
+    border-radius: 999px;
+    padding-left: 2.4rem;
+  }
+  .search-icon {
+    position: absolute; left: .75rem; top: 50%; transform: translateY(-50%);
+    color: var(--muted);
+    pointer-events: none;
+  }
+
+  /* Cards */
+  .recipe-card {
+    border: 1px solid rgba(0,0,0,.06);
+    border-radius: var(--card-radius);
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow .15s ease, transform .15s ease;
+    background: #fff;
+    overflow: hidden;
+  }
+  .recipe-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+  .placeholder-media {
+    background: #dee1e6;
+    border-bottom: 1px solid rgba(0,0,0,.06);
+  }
+  .bookmark-btn {
+    position: absolute;
+    right: .75rem;
+    top: .75rem;
+    background: #fff;
+    border: 1px solid rgba(0,0,0,.08);
+    border-radius: 8px;
+    padding: .35rem .45rem;
+    line-height: 0;
+    box-shadow: var(--shadow-sm);
+  }
+  .bookmark-btn svg { width: 18px; height: 18px; color: #495057; }
+  .bookmark-btn.active svg { color: var(--brand-700); }
+
+  .meta {
+    display: flex; gap: .75rem; align-items: center; color: var(--muted); font-size: .875rem;
+  }
+  .meta .dot {
+    width: 3px; height: 3px; background: rgba(0,0,0,.15); border-radius: 50%;
+    display: inline-block;
+  }
+
+  /* Badges */
+  .badge-soft {
+    --bg: rgba(99,192,107,.12);
+    --fg: #2e7d32;
+    background: var(--bg); color: var(--fg);
+    border: 1px solid rgba(46,125,50,.15);
+    border-radius: 999px; padding: .25rem .5rem; font-weight: 600; font-size: .75rem;
+  }
+  .badge-soft.yellow { --bg: rgba(243,201,75,.16); --fg: #947200; border-color: rgba(148,114,0,.2); }
+  .badge-soft.gray { --bg: rgba(0,0,0,.06); --fg: #495057; border-color: rgba(0,0,0,.08); }
+
+  /* Footer */
+  .site-footer {
+    background: #1e2124;
+    color: #c9ced4;
+  }
+  .site-footer a { color: #c9ced4; text-decoration: none; }
+  .site-footer a:hover { color: #fff; text-decoration: underline; }
+  .social a {
+    width: 36px; height: 36px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
+    background: rgba(255,255,255,.06); margin-right: .5rem;
+  }
+  .copyright {
+    background: #171a1d; color: #9aa3ad; font-size: .875rem;
+    border-top: 1px solid rgba(255,255,255,.05);
+  }
+
+  /* Utilities */
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
