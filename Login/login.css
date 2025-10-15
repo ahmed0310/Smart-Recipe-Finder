@@ -1,7 +1,7 @@
 :root {
     --primary-green: #8bc34a;
     --dark-green: #7cb342;
-    --light-bg: #f0f0f0;
+    --light-bg: #e8e8e8;
     --dark-bg: #2c2c2c;
 }
 
@@ -15,6 +15,9 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: var(--light-bg);
     color: #333;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Smooth Transitions */
@@ -47,7 +50,7 @@ body {
 }
 
 .navbar-nav .nav-link {
-    color: white !important;
+    color: #2c2c2c !important;
     font-size: 15px;
     font-weight: 500;
     padding: 8px 20px !important;
@@ -74,100 +77,44 @@ body {
 }
 
 /* Main Content */
-.contact-section {
-    padding: 60px 0 80px;
-    min-height: calc(100vh - 200px);
+.login-section {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
 }
 
-.contact-container {
-    max-width: 950px;
-    margin: 0 auto;
+.login-container {
+    max-width: 500px;
+    width: 100%;
     background: white;
     border-radius: 16px;
-    padding: 50px 60px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    padding: 50px 55px;
+    box-shadow: 0 4px 25px rgba(0,0,0,0.12);
+    animation: fadeInUp 0.6s ease;
 }
 
-.contact-header {
+.login-header {
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 10px;
 }
 
-.contact-header h1 {
-    font-size: 36px;
+.login-header h1 {
+    font-size: 32px;
     font-weight: 600;
     color: #2c2c2c;
-    margin-bottom: 15px;
+    margin-bottom: 8px;
 }
 
-.contact-header p {
+.login-header p {
+    font-size: 16px;
     color: #666;
-    font-size: 15px;
-    line-height: 1.6;
-}
-
-/* Contact Info Cards */
-.contact-info-cards {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
+    font-weight: 500;
     margin-bottom: 40px;
-    flex-wrap: wrap;
-}
-
-.info-card {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    padding: 20px 25px;
-    background: #f8f9fa;
-    border-radius: 10px;
-    border: 1px solid #e9ecef;
-    flex: 1;
-    min-width: 250px;
-    max-width: 300px;
-    transition: all 0.3s ease;
-}
-
-.info-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
-
-.info-icon {
-    width: 45px;
-    height: 45px;
-    background: white;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #666;
-    font-size: 20px;
-    flex-shrink: 0;
-}
-
-.info-content {
-    flex: 1;
-}
-
-.info-label {
-    font-weight: 600;
-    color: #333;
-    font-size: 14px;
-    margin-bottom: 3px;
-}
-
-.info-value {
-    color: #666;
-    font-size: 13px;
 }
 
 /* Form Styles */
-.contact-form {
-    margin-top: 30px;
-}
-
 .form-label {
     font-weight: 500;
     color: #333;
@@ -175,74 +122,98 @@ body {
     font-size: 14px;
 }
 
-.form-control,
-.form-control:focus {
+.input-icon-wrapper {
+    position: relative;
+}
+
+.input-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+    font-size: 15px;
+    z-index: 10;
+}
+
+.form-control {
     border: 1px solid #ddd;
     border-radius: 8px;
-    padding: 12px 16px;
+    padding: 12px 16px 12px 40px;
     font-size: 14px;
     transition: all 0.3s ease;
+    background: white;
 }
 
 .form-control:focus {
     border-color: var(--primary-green);
     box-shadow: 0 0 0 3px rgba(111, 189, 111, 0.1);
+    background: white;
 }
 
 .form-control::placeholder {
     color: #999;
 }
 
-textarea.form-control {
-    resize: vertical;
-    min-height: 120px;
+/* Forgot Password Link */
+.forgot-password {
+    text-align: right;
+    margin-top: 10px;
+    margin-bottom: 30px;
 }
 
-.btn-submit {
+.forgot-password a {
+    color: var(--primary-green);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.forgot-password a:hover {
+    text-decoration: underline;
+}
+
+/* Sign In Button */
+.btn-signin {
     background: var(--primary-green);
     color: white;
     border: none;
-    padding: 12px 40px;
+    padding: 14px;
     border-radius: 8px;
     font-weight: 600;
-    font-size: 15px;
+    font-size: 16px;
+    width: 100%;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
-.btn-submit:hover {
+.btn-signin:hover {
     background: var(--dark-green);
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(111, 189, 111, 0.3);
 }
 
-.btn-submit:active {
+.btn-signin:active {
     transform: translateY(0);
 }
 
-/* Go Back Button */
-.back-button-container {
+/* Sign Up Link */
+.signup-link {
     text-align: center;
-    margin-top: 30px;
+    margin-top: 25px;
+    font-size: 14px;
+    color: #666;
 }
 
-.btn-back {
-    background: white;
+.signup-link a {
     color: var(--primary-green);
-    border: 2px solid var(--primary-green);
-    padding: 12px 50px;
-    border-radius: 8px;
+    text-decoration: none;
     font-weight: 600;
-    font-size: 15px;
-    cursor: pointer;
-    transition: all 0.3s ease;
+    margin-left: 5px;
 }
 
-.btn-back:hover {
-    background: var(--primary-green);
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(111, 189, 111, 0.2);
+.signup-link a:hover {
+    text-decoration: underline;
 }
 
 /* Footer */
@@ -250,6 +221,7 @@ footer {
     background: var(--dark-bg);
     color: white;
     padding: 50px 0 30px;
+    margin-top: auto;
 }
 
 .footer-logo {
@@ -350,23 +322,26 @@ footer {
     font-size: 14px;
 }
 
+/* Validation Messages */
+.invalid-feedback {
+    display: none;
+    color: #dc3545;
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+.invalid-feedback.show {
+    display: block;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
-    .contact-container {
+    .login-container {
         padding: 35px 25px;
     }
 
-    .contact-header h1 {
+    .login-header h1 {
         font-size: 28px;
-    }
-
-    .contact-info-cards {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .info-card {
-        max-width: 100%;
     }
 
     .navbar-collapse {
@@ -377,11 +352,11 @@ footer {
     }
 }
 
-/* Loading Animation */
-@keyframes fadeIn {
+/* Animations */
+@keyframes fadeInUp {
     from {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(30px);
     }
     to {
         opacity: 1;
@@ -389,6 +364,60 @@ footer {
     }
 }
 
-.contact-container {
-    animation: fadeIn 0.6s ease;
+/* Focus Effects */
+.form-control:focus + .input-icon {
+    color: var(--primary-green);
+}
+
+/* Loading State */
+.btn-signin.loading {
+    opacity: 0.7;
+    cursor: not-allowed;
+    position: relative;
+}
+
+.btn-signin.loading::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border: 2px solid white;
+    border-top-color: transparent;
+    border-radius: 50%;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: translateY(-50%) rotate(360deg); }
+}
+
+/* Password Toggle */
+.password-toggle {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #999;
+    font-size: 14px;
+    z-index: 10;
+    transition: color 0.3s ease;
+}
+
+.password-toggle:hover {
+    color: var(--primary-green);
+}
+
+/* Shake animation for errors */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+.shake {
+    animation: shake 0.5s;
 }

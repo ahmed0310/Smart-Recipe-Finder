@@ -8,13 +8,15 @@
     --card-radius: 14px;
     --shadow-sm: 0 1px 2px rgba(0,0,0,.06);
     --shadow-md: 0 6px 24px rgba(0,0,0,.06);
+    --primary-green: #8bc34a;
+    --dark-green: #7cb342;
   }
 
   /* Top bar */
   .topbar {
-    background: linear-gradient(90deg, var(--brand-700), var(--brand));
+    background: linear-gradient(135deg, var(--primary-green) 0%, var(--dark-green) 100%);
     color: #fff;
-    min-height: 54px;
+    min-height: 75px;
   }
   .topbar .navbar-brand {
     display: flex; align-items: center; gap: .5rem;
@@ -24,7 +26,7 @@
     width: 26px; height: 26px; border-radius: 7px; background: rgba(255,255,255,.8);
     border: 2px solid rgba(255,255,255,.9);
   }
-  .topbar .nav-link { color: #ffffffd9; }
+  .topbar .nav-link { color: #ffffffd9; margin-left: 15px; }
   .topbar .nav-link:hover, .topbar .nav-link:focus { color: #fff; }
 
   /* Page header */
