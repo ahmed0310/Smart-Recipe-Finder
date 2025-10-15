@@ -1,6 +1,6 @@
 :root {
-    --primary-green: #6fbd6f;
-    --dark-green: #5ca55c;
+    --primary-green: #8bc34a;
+    --dark-green: #7cb342;
     --light-bg: #e8e8e8;
     --dark-bg: #2c2c2c;
 }
@@ -27,7 +27,7 @@ body {
 
 /* Header/Navbar */
 .navbar {
-    background: linear-gradient(135deg, #81c784 0%, var(--primary-green) 100%);
+    background: linear-gradient(135deg, var(--primary-green) 0%, var(--dark-green) 100%);
     padding: 12px 0;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
