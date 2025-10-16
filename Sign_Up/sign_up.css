@@ -377,6 +377,9 @@ footer {
         padding: 35px 25px;
     }
 
+    .navbar-nav .nav-link {
+        color : #2c2c2c !important;
+    }
     .signup-header h1 {
         font-size: 28px;
     }

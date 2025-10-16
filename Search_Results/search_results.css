@@ -442,6 +442,9 @@ footer {
         margin-bottom: 35px;
     }
 
+    .navbar-nav .nav-link {
+        color : #2c2c2c !important;
+    }
     .recipe-card {
         margin-bottom: 20px;
     }

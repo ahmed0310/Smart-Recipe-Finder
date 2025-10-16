@@ -339,6 +339,9 @@ footer {
     .login-container {
         padding: 35px 25px;
     }
+    .navbar-nav .nav-link {
+        color : #2c2c2c !important;
+    }
 
     .login-header h1 {
         font-size: 28px;

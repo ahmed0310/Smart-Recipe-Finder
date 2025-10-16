@@ -424,6 +424,9 @@ footer {
         flex-direction: column;
         gap: 15px;
     }
+    .navbar-nav .nav-link {
+        color : #2c2c2c !important;
+    }
 
     nav ul {
         gap: 15px;
