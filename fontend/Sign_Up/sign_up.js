@@ -75,9 +75,11 @@
             })
             .then(() => {
                 alert('Account created successfully! You can now log in.');
+
                 document.getElementById('signupForm').reset();
                 strengthContainer.classList.remove('show');
                 // window.location.href = '../Login/login.html';
+
             })
             .catch((err) => {
                 confirmError.textContent = err.message || 'Signup error';

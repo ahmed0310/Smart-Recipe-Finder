@@ -1,5 +1,6 @@
 // server.js — Smart Recipe Finder backend
 
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
@@ -103,11 +104,17 @@ diet: ${diet}
 app.post("/signup", (req, res) => {
   const { name, email, password } = req.body;
   const query = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
+  console.log(`[DB LOG] /signup - Executing query: ${query}`);
+  console.log(`[DB LOG] /signup - Parameters: [${name}, ${email}, ${password}]`);
   db.query(query, [name, email, password], (err, result) => {
     if (err) {
-      console.error(err);
+      console.error(`[DB LOG] /signup - Error: ${err.message}`);
+      console.error(`[DB LOG] /signup - Full error:`, err);
       res.status(500).json({ message: "Signup failed" });
     } else {
+      console.log(`[DB LOG] /signup - Success: Inserted user with ID ${result.insertId}`);
+      console.log(`[DB LOG] /signup - Affected rows: ${result.affectedRows}`);
+      console.log(`New user signed up: ${name} (${email})`);
       res.status(200).json({ message: "User registered successfully" });
     }
   });
@@ -117,12 +124,19 @@ app.post("/signup", (req, res) => {
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
   const query = "SELECT * FROM users WHERE email = ? AND password = ?";
+  console.log(`[DB LOG] /login - Executing query: ${query}`);
+  console.log(`[DB LOG] /login - Parameters: [${email}, ${password}]`);
   db.query(query, [email, password], (err, results) => {
     if (err) {
+      console.error(`[DB LOG] /login - Error: ${err.message}`);
+      console.error(`[DB LOG] /login - Full error:`, err);
       res.status(500).json({ message: "Login error" });
     } else if (results.length > 0) {
+      console.log(`[DB LOG] /login - Success: Found ${results.length} user(s)`);
+      console.log(`[DB LOG] /login - User details: ID ${results[0].id}, Name: ${results[0].name}, Email: ${results[0].email}`);
       res.status(200).json({ message: "Login successful", user: results[0] });
     } else {
+      console.log(`[DB LOG] /login - No matching user found`);
       res.status(401).json({ message: "Invalid credentials" });
     }
   });
@@ -132,11 +146,16 @@ app.post("/login", (req, res) => {
 app.post("/favourites", (req, res) => {
   const { user_id, recipe_title, recipe_text } = req.body;
   const query = "INSERT INTO favourites (user_id, recipe_title, recipe_text) VALUES (?, ?, ?)";
+  console.log(`[DB LOG] /favourites POST - Executing query: ${query}`);
+  console.log(`[DB LOG] /favourites POST - Parameters: [${user_id}, ${recipe_title}, ${recipe_text}]`);
   db.query(query, [user_id, recipe_title, recipe_text], (err, result) => {
     if (err) {
-      console.error(err);
+      console.error(`[DB LOG] /favourites POST - Error: ${err.message}`);
+      console.error(`[DB LOG] /favourites POST - Full error:`, err);
       res.status(500).json({ message: "Failed to save recipe" });
     } else {
+      console.log(`[DB LOG] /favourites POST - Success: Inserted favourite with ID ${result.insertId}`);
+      console.log(`[DB LOG] /favourites POST - Affected rows: ${result.affectedRows}`);
       res.status(200).json({ message: "Recipe saved successfully" });
     }
   });
@@ -146,10 +165,16 @@ app.post("/favourites", (req, res) => {
 app.get("/favourites/:user_id", (req, res) => {
   const { user_id } = req.params;
   const query = "SELECT * FROM favourites WHERE user_id = ?";
+  console.log(`[DB LOG] /favourites/:user_id GET - Executing query: ${query}`);
+  console.log(`[DB LOG] /favourites/:user_id GET - Parameters: [${user_id}]`);
   db.query(query, [user_id], (err, results) => {
     if (err) {
+      console.error(`[DB LOG] /favourites/:user_id GET - Error: ${err.message}`);
+      console.error(`[DB LOG] /favourites/:user_id GET - Full error:`, err);
       res.status(500).json({ message: "Failed to fetch favourites" });
     } else {
+      console.log(`[DB LOG] /favourites/:user_id GET - Success: Retrieved ${results.length} favourite(s)`);
+      console.log(`[DB LOG] /favourites/:user_id GET - Results:`, results.map(r => ({ id: r.id, title: r.recipe_title })));
       res.status(200).json(results);
     }
   });
@@ -159,11 +184,16 @@ app.get("/favourites/:user_id", (req, res) => {
 app.post("/contact", (req, res) => {
   const { name, email, message } = req.body;
   const query = "INSERT INTO contacts (name, email, message) VALUES (?, ?, ?)";
+  console.log(`[DB LOG] /contact - Executing query: ${query}`);
+  console.log(`[DB LOG] /contact - Parameters: [${name}, ${email}, ${message}]`);
   db.query(query, [name, email, message], (err, result) => {
     if (err) {
-      console.error(err);
+      console.error(`[DB LOG] /contact - Error: ${err.message}`);
+      console.error(`[DB LOG] /contact - Full error:`, err);
       res.status(500).json({ message: "Failed to submit contact form" });
     } else {
+      console.log(`[DB LOG] /contact - Success: Inserted contact with ID ${result.insertId}`);
+      console.log(`[DB LOG] /contact - Affected rows: ${result.affectedRows}`);
       res.status(200).json({ message: "Message received successfully" });
     }
   });
