@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classic Chocolate Chip Cookies - Recipe</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./recipe_page.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <div class="logo-icon"></div>
+            <span>Logo</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../Contact/contact.html">Contact Us</a></li>
+                <li><a href="../About_us/about.html">About Us</a></li>
+                <li><a href="../Login/login.html">Login</a></li>
+                <li><a href="../Sign_Up/sign_up.html">Sign Up</a></li>
+                <li><a href="../Saved_Recipes/saved_recipes.html"></a>Saved Recipes</li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Recipe Card -->
+        <div class="recipe-card">
+            <div class="recipe-header">
+                <div class="recipe-image">Recipe Image</div>
+                <div class="recipe-info">
+                    <h1>Classic Chocolate Chip Cookies</h1>
+                    <p class="recipe-description">Perfectly chewy and crispy cookies with a rich chocolate flavor</p>
+                    
+                    <div class="recipe-meta">
+                        <div class="meta-item">
+                            <i class="fas fa-user"></i>
+                            <span>Chef Sarah Johnson</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="far fa-clock"></i>
+                            <span>Prep: 15 min</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-fire"></i>
+                            <span>Cook: 12 min</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="far fa-clock"></i>
+                            <span>Total: 27 min</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-utensils"></i>
+                            <span>Serves: 24 cookies</span>
+                        </div>
+                    </div>
+
+                    <div class="recipe-tags">
+                        <button class="tag tag-dessert">Dessert</button>
+                        <button class="tag tag-baking">Baking</button>
+                        <button class="tag tag-sweet">Sweet</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ingredients Section -->
+        <div class="ingredients-section">
+            <h2 class="section-title">
+                <i class="fas fa-list"></i>
+                Ingredients
+            </h2>
+            <div class="ingredients-grid">
+                <div class="ingredient-item">
+                    <div class="ingredient-checkbox" onclick="toggleIngredient(this)"></div>
+                    <span class="ingredient-text">2¼ cups all-purpose flour</span>
+                </div>
+                <div class="ingredient-item">
+                    <div class="ingredient-checkbox" onclick="toggleIngredient(this)"></div>
+                    <span class="ingredient-text">1 tsp baking soda</span>
+                </div>
+                <div class="ingredient-item">
+                    <div class="ingredient-checkbox" onclick="toggleIngredient(this)"></div>
+                    <span class="ingredient-text">1 tsp salt</span>
+                </div>
+                <div class="ingredient-item">
+                    <div class="ingredient-checkbox" onclick="toggleIngredient(this)"></div>
+                    <span class="ingredient-text">1 cup butter, softened</span>
+                </div>
+                <div class="ingredient-item">
+                    <div class="ingredient-checkbox" onclick="toggleIngredient(this)"></div>
+                    <span class="ingredient-text">¾ cup granulated sugar</span>
+                </div>
+                <div class="ingredient-item">
+                    <div class="ingredient-checkbox" onclick="toggleIngredient(this)"></div>
+                    <span class="ingredient-text">¾ cup packed brown sugar</span>
+                </div>
+                <div class="ingredient-item">
+                    <div class="ingredient-checkbox" onclick="toggleIngredient(this)"></div>
+                    <span class="ingredient-text">2 large eggs</span>
+                </div>
+                <div class="ingredient-item">
+                    <div class="ingredient-checkbox" onclick="toggleIngredient(this)"></div>
+                    <span class="ingredient-text">2 tsp vanilla extract</span>
+                </div>
+                <div class="ingredient-item">
+                    <div class="ingredient-checkbox" onclick="toggleIngredient(this)"></div>
+                    <span class="ingredient-text">2 cups chocolate chips</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Method Section -->
+        <div class="method-section">
+            <h2 class="section-title">
+                <i class="fas fa-book"></i>
+                Method
+            </h2>
+            <div class="method-steps">
+                <div class="method-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <div class="step-title">Preheat and Prepare</div>
+                        <div class="step-description">Preheat oven to 375°F (190°C). Line baking sheets with parchment paper.</div>
+                    </div>
+                </div>
+                <div class="step-line"></div>
+
+                <div class="method-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <div class="step-title">Mix Dry Ingredients</div>
+                        <div class="step-description">In a small bowl, combine flour, baking soda, and salt. Set aside.</div>
+                    </div>
+                </div>
+                <div class="step-line"></div>
+
+                <div class="method-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <div class="step-title">Cream Butter and Sugars</div>
+                        <div class="step-description">In a large bowl, beat softened butter, granulated sugar, and brown sugar until creamy.</div>
+                    </div>
+                </div>
+                <div class="step-line"></div>
+
+                <div class="method-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <div class="step-title">Add Eggs and Vanilla</div>
+                        <div class="step-description">Beat in eggs one at a time, then add vanilla extract.</div>
+                    </div>
+                </div>
+                <div class="step-line"></div>
+
+                <div class="method-step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <div class="step-title">Combine Ingredients</div>
+                        <div class="step-description">Gradually beat in flour mixture. Stir in chocolate chips.</div>
+                    </div>
+                </div>
+                <div class="step-line"></div>
+
+                <div class="method-step">
+                    <div class="step-number">6</div>
+                    <div class="step-content">
+                        <div class="step-title">Bake Cookies</div>
+                        <div class="step-description">Drop rounded tablespoons of dough onto baking sheets. Bake for 9-11 minutes until golden brown.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Additional Information -->
+        <div class="additional-info">
+            <h2 class="info-title">Additional Information</h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="info-card-title">
+                        <i class="fas fa-fire"></i>
+                        Nutrition Facts
+                    </div>
+                    <div class="info-content">
+                        Calories: 120 per cookie<br>
+                        Fat: 6g<br>
+                        Carbs: 15g<br>
+                        Protein: 2g
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-card-title">
+                        <i class="fas fa-star"></i>
+                        Difficulty
+                    </div>
+                    <div class="stars">★★★★★</div>
+                    <div class="difficulty-text">Easy</div>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-card-title">
+                        <i class="fas fa-heart"></i>
+                        Tips
+                    </div>
+                    <div class="info-content">
+                        Use room temperature eggs<br>
+                        Don't overbake for chewy texture<br>
+                        Store in airtight container
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-logo">
+                    <div class="footer-logo-icon"></div>
+                    <span style="font-weight: bold; font-size: 18px;">Company Name</span>
+                </div>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#about">About Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Info</h3>
+                <ul class="contact-info">
+                    <li><i class="fas fa-map-marker-alt"></i> 123 Business Street, City, Country</li>
+                    <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
+                    <li><i class="fas fa-envelope"></i> info@company.com</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            © 2025 Company Name. All rights reserved.
+        </div>
+    </footer>
+    <script src="../auth.js"></script>
+    <script src="./recipe_page.js"></script>
+</body>
+</html>
