@@ -11,12 +11,12 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-// ✅ Route 0: Generate recipes via OpenAI (expects { ingredients, diet })
+// ✅ Route 0: Generate recipes via Gemini (expects { ingredients, diet })
 app.post("/generate", async (req, res) => {
   const { ingredients, diet } = req.body || {};
-  const apiKey = process.env.OPENAI_API_KEY;
+  const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
-    return res.status(500).json({ message: "Missing OPENAI_API_KEY" });
+    return res.status(500).json({ message: "Missing GEMINI_API_KEY" });
   }
   if (!ingredients || !diet) {
     return res.status(400).json({ message: "ingredients and diet are required" });
@@ -37,21 +37,23 @@ diet: ${diet}
 `;
 
   const payload = JSON.stringify({
-    model: "gpt-4o-mini",
-    messages: [
-      { role: "system", content: "You format outputs as strict JSON with no commentary." },
-      { role: "user", content: prompt }
-    ],
-    temperature: 0.7
+    contents: [
+      {
+        parts: [
+          {
+            text: prompt
+          }
+        ]
+      }
+    ]
   });
 
   const options = {
-    hostname: "api.openai.com",
-    path: "/v1/chat/completions",
+    hostname: "generativelanguage.googleapis.com",
+    path: `/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${apiKey}`,
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${apiKey}`
+      "Content-Type": "application/json"
     }
   };
 
@@ -61,19 +63,19 @@ diet: ${diet}
     resp.on("end", () => {
       try {
         const parsed = JSON.parse(data);
-        // If OpenAI returned an error object, surface it
+        // If Gemini returned an error object, surface it
         if (parsed?.error) {
-          const message = parsed.error?.message || "OpenAI API error";
-          const type = parsed.error?.type;
-          console.error("OpenAI API error:", parsed.error);
+          const message = parsed.error?.message || "Gemini API error";
+          const type = parsed.error?.code;
+          console.error("Gemini API error:", parsed.error);
           return res.status(502).json({ message, type });
         }
-        const choice = parsed?.choices?.[0];
-        if (!choice || !choice.message || !choice.message.content) {
-          console.error("OpenAI response missing choices:", parsed);
+        const candidate = parsed?.candidates?.[0];
+        if (!candidate || !candidate.content || !candidate.content.parts || !candidate.content.parts[0]) {
+          console.error("Gemini response missing content:", parsed);
           return res.status(502).json({ message: "No content received from AI" });
         }
-        let content = choice.message.content;
+        let content = candidate.content.parts[0].text;
         // Strip markdown code fences if present
         const fencedMatch = content.match(/```(?:json)?\s*([\s\S]*?)\s*```/i);
         if (fencedMatch) content = fencedMatch[1];
@@ -87,13 +89,13 @@ diet: ${diet}
         if (!Array.isArray(json)) throw new Error("Invalid JSON format");
         res.status(200).json(json);
       } catch (e) {
-        console.error("OpenAI parse error:", e);
+        console.error("Gemini parse error:", e);
         res.status(500).json({ message: "AI response parse error", detail: String(e) });
       }
     });
   });
   reqAi.on("error", (err) => {
-    console.error("OpenAI request error:", err);
+    console.error("Gemini request error:", err);
     res.status(502).json({ message: "AI request failed" });
   });
   reqAi.write(payload);
@@ -156,12 +158,31 @@ app.post("/favourites", (req, res) => {
     } else {
       console.log(`[DB LOG] /favourites POST - Success: Inserted favourite with ID ${result.insertId}`);
       console.log(`[DB LOG] /favourites POST - Affected rows: ${result.affectedRows}`);
-      res.status(200).json({ message: "Recipe saved successfully" });
+      res.status(200).json({ message: "Recipe saved successfully", favourite_id: result.insertId });
     }
   });
 });
 
-// ✅ Route 4: Fetch user’s favourite recipes
+// ✅ Route 4: Delete a favourite recipe
+app.delete("/favourites/:favourite_id", (req, res) => {
+  const { favourite_id } = req.params;
+  const query = "DELETE FROM favourites WHERE id = ?";
+  console.log(`[DB LOG] /favourites/:favourite_id DELETE - Executing query: ${query}`);
+  console.log(`[DB LOG] /favourites/:favourite_id DELETE - Parameters: [${favourite_id}]`);
+  db.query(query, [favourite_id], (err, result) => {
+    if (err) {
+      console.error(`[DB LOG] /favourites/:favourite_id DELETE - Error: ${err.message}`);
+      console.error(`[DB LOG] /favourites/:favourite_id DELETE - Full error:`, err);
+      res.status(500).json({ message: "Failed to delete favourite" });
+    } else {
+      console.log(`[DB LOG] /favourites/:favourite_id DELETE - Success: Deleted favourite with ID ${favourite_id}`);
+      console.log(`[DB LOG] /favourites/:favourite_id DELETE - Affected rows: ${result.affectedRows}`);
+      res.status(200).json({ message: "Favourite deleted successfully" });
+    }
+  });
+});
+
+// ✅ Route 5: Fetch user’s favourite recipes
 app.get("/favourites/:user_id", (req, res) => {
   const { user_id } = req.params;
   const query = "SELECT * FROM favourites WHERE user_id = ?";
@@ -180,7 +201,7 @@ app.get("/favourites/:user_id", (req, res) => {
   });
 });
 
-// ✅ Route 5: Contact form submission
+// ✅ Route 6: Contact form submission
 app.post("/contact", (req, res) => {
   const { name, email, message } = req.body;
   const query = "INSERT INTO contacts (name, email, message) VALUES (?, ?, ?)";

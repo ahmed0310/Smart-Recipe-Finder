@@ -23,6 +23,15 @@
     } catch { return null; }
   }
 
+  // Authentication check: redirect to login if not logged in
+  (function checkAuth() {
+    const user = getCurrentUser();
+    if (!user || !user.id) {
+      localStorage.setItem('redirectAfterLogin', window.location.href);
+      window.location.href = '../Login/login.html';
+    }
+  })();
+
   // Pagination / state
   const PAGE_SIZE = 8;
   let currentPage = 1;
@@ -47,7 +56,7 @@
   const searchInput = document.getElementById("searchInput");
 
   function filterData(query) {
-    const list = FAVOURITES.length ? FAVOURITES : STATIC_RECIPES;
+    const list = FAVOURITES;
     if (!query) return list;
     const q = query.toLowerCase().trim();
     return list.filter(r => {

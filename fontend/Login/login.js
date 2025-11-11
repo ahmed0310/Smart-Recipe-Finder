@@ -70,8 +70,14 @@
                     localStorage.setItem('currentUser', JSON.stringify(data.user));
                 } catch {}
                 alert('Login successful! Welcome back.');
-                // Optionally redirect:
-                // window.location.href = '../index.html';
+                // Check for redirect after login
+                const redirectUrl = localStorage.getItem('redirectAfterLogin');
+                if (redirectUrl) {
+                    localStorage.removeItem('redirectAfterLogin');
+                    window.location.href = redirectUrl;
+                } else {
+                    window.location.href = '../index.html';
+                }
             })
             .catch((err) => {
                 passwordError.textContent = err.message || 'Login error';

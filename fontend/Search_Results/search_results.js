@@ -19,6 +19,7 @@ function getCurrentUser() {
 	try {
 		const container = document.querySelector('.results-section .row.g-4');
 		const raw = localStorage.getItem('lastResults');
+		const apiFailed = localStorage.getItem('apiFailed') === 'true';
 		if (!container || !raw) return;
 		const items = JSON.parse(raw);
 		if (!Array.isArray(items) || items.length === 0) {
@@ -40,69 +41,139 @@ function getCurrentUser() {
 			`;
 			return;
 		}
-		container.innerHTML = '';
-		for (const r of items) {
-			const title = r.recipe_title || 'Recipe';
-			const desc = r.recipe_text || '';
-			const time = r.time ? `${r.time} mins` : '';
-			const servings = r.servings ? `${r.servings} servings` : '';
-			const tags = Array.isArray(r.tags) ? r.tags : [];
-			const card = document.createElement('div');
-			card.className = 'col-lg-4 col-md-6';
-			card.innerHTML = `
-				<div class="recipe-card">
-					<div class="recipe-image">
-						<span>Image cap</span>
-						<div class="bookmark-icon"><i class="far fa-bookmark"></i></div>
-					</div>
-					<div class="recipe-content">
-						<h3 class="recipe-title">${title}</h3>
-						<p class="recipe-description">${desc}</p>
-						<div class="recipe-meta">
-							<div class="meta-item">
-								<i class="far fa-clock"></i>
-								<span>${time}</span>
-							</div>
-							<div class="meta-item">
-								<i class="fas fa-user"></i>
-								<span>${servings}</span>
-							</div>
-						</div>
-						<div class="recipe-tags">
-							${tags.map(t => `<span class="recipe-tag">${t}</span>`).join('')}
-						</div>
-						<button class="btn-view-recipe">View Full Recipe</button>
-					</div>
+
+		// If API failed, show the message first
+		if (apiFailed) {
+			const alertDiv = document.createElement('div');
+			alertDiv.className = 'col-12 mb-4';
+			alertDiv.innerHTML = `
+				<div class="alert alert-warning text-center" role="alert">
+					<h5>Sorry, API is not available right now.</h5>
+					<p>Here are some famous recipes you might enjoy:</p>
 				</div>
 			`;
-			// Wire view button
-			card.querySelector('.btn-view-recipe').addEventListener('click', () => {
-				try { localStorage.setItem('currentRecipe', JSON.stringify(r)); } catch {}
-				window.location.href = '../Recipe_Page/recipe_page.html';
-			});
-			// Wire bookmark
-			const iconWrap = card.querySelector('.bookmark-icon');
-			iconWrap.addEventListener('click', function() {
-				const bookmark = this.querySelector('i');
-				const user = getCurrentUser();
-				if (!(user && user.id)) {
-					alert('Please log in to save recipes.');
-					window.location.href = '../Login/login.html';
-					return;
-				}
-				bookmark.classList.remove('far');
-				bookmark.classList.add('fas');
-				fetch(`${API_BASE}/favourites`, {
-					method: 'POST',
-					headers: { 'Content-Type': 'application/json' },
-					body: JSON.stringify({
-						user_id: user.id,
-						recipe_title: title,
-						recipe_text: desc
-					})
-				}).catch(() => {});
-			});
-			container.appendChild(card);
+			container.appendChild(alertDiv);
+		}
+
+		const user = getCurrentUser();
+		let favourites = [];
+		if (user && user.id) {
+			// Fetch user's favourites to set bookmark states
+			fetch(`${API_BASE}/favourites/${user.id}`)
+				.then(res => res.json())
+				.then(data => {
+					favourites = data;
+					renderCards();
+				})
+				.catch(() => renderCards()); // Proceed without favourites if fetch fails
+		} else {
+			renderCards();
+		}
+
+		function renderCards() {
+			container.innerHTML = '';
+			for (const r of items) {
+				const title = r.recipe_title || 'Recipe';
+				const desc = r.recipe_text || '';
+				const time = r.time ? `${r.time} mins` : '';
+				const servings = r.servings ? `${r.servings} servings` : '';
+				const tags = Array.isArray(r.tags) ? r.tags : [];
+				// Check if this recipe is favourited
+				const fav = favourites.find(f => f.recipe_title === title && f.recipe_text === desc);
+				const isSaved = !!fav;
+				const favouriteId = fav ? fav.id : null;
+				const card = document.createElement('div');
+				card.className = 'col-lg-4 col-md-6';
+				card.innerHTML = `
+					<div class="recipe-card">
+						<div class="recipe-image">
+							<span>Image cap</span>
+							<div class="bookmark-icon" ${favouriteId ? `data-favourite-id="${favouriteId}"` : ''}><i class="${isSaved ? 'fas' : 'far'} fa-bookmark"></i></div>
+						</div>
+						<div class="recipe-content">
+							<h3 class="recipe-title">${title}</h3>
+							<p class="recipe-description">${desc}</p>
+							<div class="recipe-meta">
+								<div class="meta-item">
+									<i class="far fa-clock"></i>
+									<span>${time}</span>
+								</div>
+								<div class="meta-item">
+									<i class="fas fa-user"></i>
+									<span>${servings}</span>
+								</div>
+							</div>
+							<div class="recipe-tags">
+								${tags.map(t => `<span class="recipe-tag">${t}</span>`).join('')}
+							</div>
+							<button class="btn-view-recipe">View Full Recipe</button>
+						</div>
+					</div>
+				`;
+				// Wire view button
+				card.querySelector('.btn-view-recipe').addEventListener('click', () => {
+					try { localStorage.setItem('currentRecipe', JSON.stringify(r)); } catch {}
+					window.location.href = '../Recipe_Page/recipe_page.html';
+				});
+				// Wire bookmark
+				const iconWrap = card.querySelector('.bookmark-icon');
+				iconWrap.addEventListener('click', function() {
+					const bookmark = this.querySelector('i');
+					const user = getCurrentUser();
+					if (!(user && user.id)) {
+						alert('Please log in to save recipes.');
+						localStorage.setItem('redirectAfterLogin', window.location.href);
+						window.location.href = '../Login/login.html';
+						return;
+					}
+					const isSaved = bookmark.classList.contains('fas');
+					if (isSaved) {
+						// Unsave
+						const favouriteId = this.getAttribute('data-favourite-id');
+						console.log('Unsave: favouriteId =', favouriteId);
+						if (favouriteId) {
+							fetch(`${API_BASE}/favourites/${favouriteId}`, {
+								method: 'DELETE'
+							}).then(res => {
+								console.log('DELETE response status:', res.status);
+								if (res.ok) {
+									bookmark.classList.remove('fas');
+									bookmark.classList.add('far');
+									this.removeAttribute('data-favourite-id');
+									alert('Recipe unsaved successfully!');
+								} else {
+									alert('Failed to unsave recipe.');
+								}
+							}).catch(err => {
+								console.error('Error unsaving recipe:', err);
+								alert('Error unsaving recipe.');
+							});
+						}
+					} else {
+						// Save
+						fetch(`${API_BASE}/favourites`, {
+							method: 'POST',
+							headers: { 'Content-Type': 'application/json' },
+							body: JSON.stringify({
+								user_id: user.id,
+								recipe_title: title,
+								recipe_text: desc
+							})
+						}).then(async res => {
+							if (res.ok) {
+								const data = await res.json();
+								bookmark.classList.remove('far');
+								bookmark.classList.add('fas');
+								this.setAttribute('data-favourite-id', data.favourite_id);
+								alert('Recipe saved successfully!');
+							} else {
+								alert('Failed to save recipe.');
+							}
+						}).catch(() => alert('Error saving recipe.'));
+					}
+				});
+				container.appendChild(card);
+			}
 		}
 	} catch {}
 })();
@@ -134,37 +205,4 @@ document.querySelectorAll('.navbar-nav .nav-link').forEach(link => {
     });
 });
 
-// Bookmark functionality + backend sync
-document.querySelectorAll('.bookmark-icon').forEach(icon => {
-    icon.addEventListener('click', function() {
-        const bookmark = this.querySelector('i');
-		const wasSaved = bookmark.classList.contains('fas');
-		if (wasSaved) {
-            bookmark.classList.remove('fas');
-            bookmark.classList.add('far');
-        } else {
-            bookmark.classList.remove('far');
-            bookmark.classList.add('fas');
-			
-			// On save, try syncing to backend favourites if user is logged in
-			try {
-				const user = getCurrentUser();
-				if (user && user.id) {
-					// Find nearby title/description to send
-					const card = this.closest('.recipe-card');
-					const title = card?.querySelector('.recipe-title')?.textContent?.trim() || 'Recipe';
-					const desc = card?.querySelector('.recipe-description')?.textContent?.trim() || '';
-					fetch(`${API_BASE}/favourites`, {
-						method: 'POST',
-						headers: { 'Content-Type': 'application/json' },
-						body: JSON.stringify({
-							user_id: user.id,
-							recipe_title: title,
-							recipe_text: desc
-						})
-					}).catch(() => {});
-				}
-			} catch {}
-        }
-    });
-});
+
